@@ -53,12 +53,15 @@ int main()
 	DWORD bytes_read;
 	bool flg=NULL;
 	do {
+		bool break_flg = NULL;
 		do {
 			char buffer[64];
 			ReadFile(output_pipe_read_end, buffer, sizeof(buffer), &bytes_read, NULL);
-			printf("CreateProcess failed (%d).\n", GetLastError());
 			fwrite(buffer, bytes_read, 1, stdout);
-		} while (bytes_read != 0);
+			for (int i = 0; i < 64; i++)
+				if (buffer[i] == '>')
+					break_flg = 1;
+		} while (!break_flg);
 		//punkt 4
 		const char PLEASE[] = "please";
 		char* input = NULL;
@@ -76,7 +79,7 @@ int main()
 				//buffer += '\n';
 				input = buffer + sizeof(PLEASE);
 				WriteFile(input_pipe_write_end, input, strlen(input), NULL, NULL);
-				fprintf(stdout, input);
+
 			}
 		}
 	} while (!flg);
