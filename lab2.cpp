@@ -36,10 +36,11 @@ int main()
 	startup_info.hStdError = output_pipe_write_end;
 	startup_info.dwFlags |= STARTF_USESTDHANDLES;
 
+	char cmd[64] = "cmd.exe";
 	PROCESS_INFORMATION pi;
 	CreateProcess(
 		NULL,
-		TEXT("cmd.exe"),
+		cmd,
 		NULL,
 		NULL,
 		TRUE,
@@ -48,7 +49,6 @@ int main()
 		NULL,
 		&startup_info,
 		&pi);
-	printf("CreateProcess failed (%d).\n", GetLastError());
 	// punkt 3
 	DWORD bytes_read;
 	bool flg=NULL;
@@ -56,6 +56,7 @@ int main()
 		do {
 			char buffer[64];
 			ReadFile(output_pipe_read_end, buffer, sizeof(buffer), &bytes_read, NULL);
+			printf("CreateProcess failed (%d).\n", GetLastError());
 			fwrite(buffer, bytes_read, 1, stdout);
 		} while (bytes_read != 0);
 		//punkt 4
