@@ -52,16 +52,18 @@ int main()
 	// punkt 3
 	DWORD bytes_read;
 	bool flg=NULL;
+	int break_flg = 1;
 	do {
-		bool break_flg = NULL;
-		do {
+		
+		while (break_flg != 2) {
+			
 			char buffer[64];
 			ReadFile(output_pipe_read_end, buffer, sizeof(buffer), &bytes_read, NULL);
 			fwrite(buffer, bytes_read, 1, stdout);
 			for (int i = 0; i < 64; i++)
 				if (buffer[i] == '>')
-					break_flg = 1;
-		} while (!break_flg);
+					break_flg ++;
+		};
 		//punkt 4
 		const char PLEASE[] = "please";
 		char* input = NULL;
@@ -79,9 +81,10 @@ int main()
 				//buffer += '\n';
 				input = buffer + sizeof(PLEASE);
 				WriteFile(input_pipe_write_end, input, strlen(input), NULL, NULL);
-
+				break;
 			}
 		}
+		break_flg = 0;
 	} while (!flg);
 
 	CloseHandle(pi.hProcess);
