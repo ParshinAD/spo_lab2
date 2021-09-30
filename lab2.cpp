@@ -1,4 +1,4 @@
-﻿
+
 #pragma warning(disable : 4996)
 
 #define WINVER 0x0A00
@@ -38,8 +38,8 @@ int main()
 
 	PROCESS_INFORMATION pi;
 	CreateProcess(
-		TEXT("cmd.exe"),
 		NULL,
+		TEXT("cmd.exe"),
 		NULL,
 		NULL,
 		TRUE,
@@ -48,6 +48,7 @@ int main()
 		NULL,
 		&startup_info,
 		&pi);
+	printf("CreateProcess failed (%d).\n", GetLastError());
 	// punkt 3
 	DWORD bytes_read;
 	bool flg=NULL;
