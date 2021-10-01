@@ -54,16 +54,13 @@ int main()
 	bool flg=NULL;
 	int break_flg = 1;
 	do {
-		
-		while (break_flg != 2) {
+		char buf[64];
+		do {
 			
 			char buffer[64];
-			ReadFile(output_pipe_read_end, buffer, sizeof(buffer), &bytes_read, NULL);
-			fwrite(buffer, bytes_read, 1, stdout);
-			for (int i = 0; i < 64; i++)
-				if (buffer[i] == '>')
-					break_flg ++;
-		};
+			ReadFile(output_pipe_read_end, buf, sizeof(buffer), &bytes_read, NULL);
+			fwrite(buf, bytes_read, 1, stdout);
+		} while (buf[bytes_read -1] != '>');
 		//punkt 4
 		const char PLEASE[] = "please";
 		char* input = NULL;
