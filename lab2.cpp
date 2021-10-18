@@ -89,6 +89,7 @@ int main()
 
 	CloseHandle(output_pipe_write_end);
 	CloseHandle(input_pipe_read_end);
+	TerminateProcess(pi.hProcess, 0);
 	return 0;
 
 }
